@@ -3,4 +3,4 @@
 # license that can be found in the LICENSE file.
 
 # Use the 0.0.0 tag for testing, it shouldn't clobber any release builds
-RELEASE?=0.0.0
+RELEASE?=0.1.0

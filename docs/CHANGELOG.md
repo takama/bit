@@ -1,4 +1,4 @@
-# Version 0.2.2
+# Version 0.2.3
 
 [Documentation](https://github.com/takama/bit/blob/master/README.md)
 
@@ -6,8 +6,8 @@
 
 ### Tests
 
-- Added Travis CI [travis-ci.org](https://travis-ci.org/takama/bit) ([#7](https://github.com/takama/k8sapp/pull/7), [@takama]
-- Added code coverage data/bot [codecov.io](https://codecov.io/gh/takama/bit) ([#7](https://github.com/takama/k8sapp/pull/7), [@takama]
+- Added Travis CI [travis-ci.org](https://travis-ci.org/takama/bit) ([#7](https://github.com/takama/bit/pull/7), [@takama]
+- Added code coverage data/bot [codecov.io](https://codecov.io/gh/takama/bit) ([#7](https://github.com/takama/bit/pull/7), [@takama]
 
 ## 0.1.0
 

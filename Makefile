@@ -6,7 +6,7 @@ PACKAGE=bit
 PROJECT=github.com/takama/${PACKAGE}
 
 # Use the 0.0.0 tag for testing, it shouldn't clobber any release builds
-RELEASE?=0.2.2
+RELEASE?=0.2.3
 
 BUILDTAGS=
 

@@ -1,5 +1,6 @@
 # Bit Router
 
+[![Build Status](https://travis-ci.org/takama/bit.svg?branch=master)](https://travis-ci.org/takama/bit)
 [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/takama/bit/issues)
 
 A simplest HTTP router contains Router interface that compatible with other routers. As well additional Control interface embeds standard http.ResponseWriter and has methods that accelerate access to `Status Code`, `Body`, `URL/Post/JSON` parameters. This router is useful to prepare a RESTful API. Also it is able to prepare JSON output, which bind automatically for relevant types of data.

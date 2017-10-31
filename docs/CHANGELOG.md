@@ -1,6 +1,12 @@
-# Version 0.2.3
+# Version 0.2.4
 
 [Documentation](https://github.com/takama/bit/blob/master/README.md)
+
+## Changelog since 0.2.3
+
+### Codebase
+
+- Added Handler interface ([#8](https://github.com/takama/bit/pull/8), [@la0rg](https://github.com/la0rg))
 
 ## Changelog since 0.1.0
 

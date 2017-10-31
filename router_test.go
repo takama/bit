@@ -454,7 +454,7 @@ func TestRouterLookup(t *testing.T) {
 	// try empty router first
 	handle, _, tsr := r.Lookup("GET", "/nope")
 	if handle != nil {
-		t.Fatalf("Got handle for unregistered pattern: %v", handle)
+		t.Fatal("Got handle for unregistered pattern.")
 	}
 	if tsr {
 		t.Error("Got wrong TSR recommendation!")

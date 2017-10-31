@@ -21,6 +21,8 @@ type Router interface {
     OPTIONS(path string, f func(Control))
     PATCH(path string, f func(Control))
 
+    http.Handler
+
     UseOptionsReplies(bool)
     SetupNotAllowedHandler(func(Control))
     SetupNotFoundHandler(func(Control))

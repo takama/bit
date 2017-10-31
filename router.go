@@ -182,3 +182,11 @@ func (r *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 	}
 }
+
+// Lookup allows the manual lookup of a method + path combo.
+func (r *router) Lookup(method, path string) (func(Control), []Param, bool) {
+	if root := r.handlers[method]; root != nil {
+		return root.get(path)
+	}
+	return nil, nil, false
+}

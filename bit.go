@@ -88,4 +88,11 @@ type Router interface {
 
 	// Listen and serve on requested host and port e.g "0.0.0.0:8080"
 	Listen(hostPort string) error
+
+	// Lookup allows the manual lookup of a method + path combo.
+	// This is e.g. useful to build a framework around this router. If the path was found, it
+	// returns the handle function and the path parameter values.
+	// Otherwise the third return value indicates whether a redirection to the same path
+	// with an extra / without the trailing slash should be performed.
+	Lookup(method, path string) (func(Control), []Param, bool)
 }

@@ -59,6 +59,9 @@ type Router interface {
 	// PATCH registers a new request handle for HTTP PATCH method.
 	PATCH(path string, f func(Control))
 
+	// Handler supports usage of the Router as a regular http Handler.
+	http.Handler
+
 	// User defined options and handlers
 
 	// If enabled, the router automatically replies to OPTIONS requests.

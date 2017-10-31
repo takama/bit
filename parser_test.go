@@ -16,7 +16,7 @@ type expected struct {
 	request    string
 	data       string
 	paramCount int
-	params     []param
+	params     []Param
 }
 
 var setOfRegistered = []registered{
@@ -81,13 +81,13 @@ var setOfExpected = []expected{
 		"/hello/John",
 		"Hello from static path",
 		0,
-		[]param{},
+		[]Param{},
 	},
 	{
 		"/hello/Jane",
 		"Hello Jane",
 		1,
-		[]param{
+		[]Param{
 			{":name", "Jane"},
 		},
 	},
@@ -95,7 +95,7 @@ var setOfExpected = []expected{
 		"/hell/jack",
 		"jack from hell",
 		2,
-		[]param{
+		[]Param{
 			{":h", "hell"},
 			{":n", "jack"},
 		},
@@ -104,7 +104,7 @@ var setOfExpected = []expected{
 		"/products/book/orders/12",
 		"Product: book order# 12",
 		1,
-		[]param{
+		[]Param{
 			{":id", "12"},
 		},
 	},
@@ -112,7 +112,7 @@ var setOfExpected = []expected{
 		"/products/table/orders/23",
 		"Product: table order# 23",
 		2,
-		[]param{
+		[]Param{
 			{":name", "table"},
 			{":id", "23"},
 		},
@@ -121,7 +121,7 @@ var setOfExpected = []expected{
 		"/products/pen/orders/11",
 		"Product: pen order# 11",
 		2,
-		[]param{
+		[]Param{
 			{":name", "pen"},
 			{":id", "11"},
 		},
@@ -130,7 +130,7 @@ var setOfExpected = []expected{
 		"/products/pen/order/10",
 		"Product: pen # 10",
 		3,
-		[]param{
+		[]Param{
 			{":name", "pen"},
 			{":order", "order"},
 			{":id", "10"},
@@ -140,7 +140,7 @@ var setOfExpected = []expected{
 		"/product/pen/order/10",
 		"product pen order # 10",
 		4,
-		[]param{
+		[]Param{
 			{":product", "product"},
 			{":name", "pen"},
 			{":order", "order"},
@@ -151,13 +151,13 @@ var setOfExpected = []expected{
 		"/static/greetings/something",
 		"Hello from star static path",
 		0,
-		[]param{},
+		[]Param{},
 	},
 	{
 		"/files/css/style.css",
 		"css",
 		1,
-		[]param{
+		[]Param{
 			{":dir", "css"},
 		},
 	},
@@ -165,7 +165,7 @@ var setOfExpected = []expected{
 		"/files/js/app.js",
 		"js",
 		1,
-		[]param{
+		[]Param{
 			{":dir", "js"},
 		},
 	},

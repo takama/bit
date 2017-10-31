@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -440,5 +441,40 @@ func TestRouterMiddleware(t *testing.T) {
 	}
 	if trw.Body.String() != message {
 		t.Error("Expected", message, "got", trw.Body.String())
+	}
+}
+
+func TestRouterLookup(t *testing.T) {
+	routed := false
+	wantHandle := func(c Control) {
+		routed = true
+	}
+	r := getRouterForTesting()
+
+	// try empty router first
+	handle, _, tsr := r.Lookup("GET", "/nope")
+	if handle != nil {
+		t.Fatal("Got handle for unregistered pattern.")
+	}
+	if tsr {
+		t.Error("Got wrong TSR recommendation!")
+	}
+
+	// insert route and try again
+	r.GET("/user/:name", wantHandle)
+
+	handle, params, _ := r.Lookup("GET", "/user/gopher")
+	if handle == nil {
+		t.Fatal("Got no handle!")
+	} else {
+		handle(nil)
+		if !routed {
+			t.Fatal("Routing failed!")
+		}
+	}
+
+	wantParams := []Param{{":name", "gopher"}}
+	if !reflect.DeepEqual(params, wantParams) {
+		t.Fatalf("Wrong parameter values: want %v, got %v", wantParams, params)
 	}
 }

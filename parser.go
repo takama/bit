@@ -27,11 +27,6 @@ type record struct {
 	parts  []string
 }
 
-// Param is a single URL parameter, consisting of a key and a value.
-type Param struct {
-	key   string
-	value string
-}
 type records []*record
 
 func (n records) Len() int           { return len(n) }
@@ -205,7 +200,7 @@ func parseParams(data records, parts []string) (h handle, result []Param, ok boo
 				break
 			} else {
 				if len(value) >= 1 && value[0:1] == ":" {
-					result = append(result, Param{key: value, value: parts[idx]})
+					result = append(result, Param{Key: value, Value: parts[idx]})
 				}
 			}
 		}

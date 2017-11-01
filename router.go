@@ -148,7 +148,7 @@ func (r *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			c := NewControl(w, req)
 			if len(params) > 0 {
 				for _, item := range params {
-					c.Param(item.key, item.value)
+					c.Param(item.Key, item.Value)
 				}
 			}
 			if r.middlewareHandler != nil {

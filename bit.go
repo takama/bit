@@ -37,6 +37,12 @@ type Control interface {
 	// TODO Add more control methods.
 }
 
+// Param is a single URL parameter, consisting of a key and a value.
+type Param struct {
+	Key   string `json:"key,omitempty"`
+	Value string `json:"value,omitempty"`
+}
+
 // Router interface contains base http methods e.g. GET, PUT, POST
 // and allows to assign user defined handlers in regular use cases
 // like `Page not found`, `Method is not allowed`,

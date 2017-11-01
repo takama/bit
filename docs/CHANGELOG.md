@@ -1,6 +1,13 @@
-# Version 0.2.4
+# Version 0.2.5
 
 [Documentation](https://github.com/takama/bit/blob/master/README.md)
+
+## Changelog since 0.2.4
+
+### Codebase
+
+- Added Lookup of registered methods ([#10](https://github.com/takama/bit/pull/10), [@la0rg](https://github.com/la0rg))
+- Fixed exported type Param ([#11](https://github.com/takama/bit/pull/11), [@takama](https://github.com/takama))
 
 ## Changelog since 0.2.3
 

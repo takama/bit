@@ -27,10 +27,6 @@ type record struct {
 	parts  []string
 }
 
-type param struct {
-	key   string
-	value string
-}
 type records []*record
 
 func (n records) Len() int           { return len(n) }
@@ -77,7 +73,7 @@ func (p *parser) register(path string, h handle) bool {
 	return false
 }
 
-func (p *parser) get(path string) (h handle, result []param, ok bool) {
+func (p *parser) get(path string) (h handle, result []Param, ok bool) {
 	if h, ok := p.static[asterisk]; ok {
 		return h, nil, true
 	}
@@ -191,7 +187,7 @@ func explode(s string) []string {
 	return a[0 : na+1]
 }
 
-func parseParams(data records, parts []string) (h handle, result []param, ok bool) {
+func parseParams(data records, parts []string) (h handle, result []Param, ok bool) {
 	for _, nds := range data {
 		values := nds.parts
 		result = nil
@@ -204,7 +200,7 @@ func parseParams(data records, parts []string) (h handle, result []param, ok boo
 				break
 			} else {
 				if len(value) >= 1 && value[0:1] == ":" {
-					result = append(result, param{key: value, value: parts[idx]})
+					result = append(result, Param{Key: value, Value: parts[idx]})
 				}
 			}
 		}

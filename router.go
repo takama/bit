@@ -148,7 +148,7 @@ func (r *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			c := NewControl(w, req)
 			if len(params) > 0 {
 				for _, item := range params {
-					c.Param(item.key, item.value)
+					c.Param(item.Key, item.Value)
 				}
 			}
 			if r.middlewareHandler != nil {
@@ -181,4 +181,12 @@ func (r *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	} else {
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 	}
+}
+
+// Lookup allows the manual lookup of a method + path combo.
+func (r *router) Lookup(method, path string) (func(Control), []Param, bool) {
+	if root := r.handlers[method]; root != nil {
+		return root.get(path)
+	}
+	return nil, nil, false
 }

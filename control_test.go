@@ -1,6 +1,7 @@
 package bit
 
 import (
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -10,10 +11,16 @@ type prm struct {
 	Key, Value string
 }
 
-var params = []prm{
+var params1 = []prm{
 	{"name", "John"},
 	{"age", "32"},
 	{"gender", "M"},
+}
+
+var params2 = []prm{
+	{"name", "Jane"},
+	{"age", "33"},
+	{"gender", "F"},
 }
 
 var testParamsData = `[{"Key":"name","Value":"John"},{"Key":"age","Value":"32"},{"Key":"gender","Value":"M"}]`
@@ -31,11 +38,24 @@ var testStrGzipData = []byte{
 
 func TestParamsQueryGet(t *testing.T) {
 
-	c := new(control)
-	for _, param := range params {
-		c.Param(param.Key, param.Value)
+	p := make(Params, 0)
+	c := &control{params: &p}
+	for _, param := range params1 {
+		c.Params().Set(param.Key, param.Value)
 	}
-	for _, param := range params {
+	for _, param := range params1 {
+		value, ok := c.Params().Get(param.Key)
+		if !ok {
+			t.Error("Expected ok, got false")
+		}
+		if value != param.Value {
+			t.Error("Expected for", param.Key, ":", param.Value, ", got", value)
+		}
+	}
+	for _, param := range params2 {
+		c.Params().Set(param.Key, param.Value)
+	}
+	for _, param := range params2 {
 		value := c.Query(param.Key)
 		if value != param.Value {
 			t.Error("Expected for", param.Key, ":", param.Value, ", got", value)
@@ -120,7 +140,7 @@ func TestWrite(t *testing.T) {
 	trw = httptest.NewRecorder()
 	c = NewControl(trw, req)
 	c.Code(http.StatusOK)
-	c.Body(params)
+	c.Body(params1)
 	if trw.Body.String() != testParamsData {
 		t.Error("Expected", testParamsData, "got", trw.Body)
 	}
@@ -150,7 +170,7 @@ func TestWrite(t *testing.T) {
 	trw = httptest.NewRecorder()
 	c = NewControl(trw, req)
 	c.Code(http.StatusAccepted)
-	c.Body(params)
+	c.Body(params1)
 	if trw.Body.String() != string(testParamGzipData) {
 		t.Error("Expected", testParamGzipData, "got", trw.Body)
 	}

@@ -15,17 +15,16 @@ type control struct {
 	req    *http.Request
 	w      http.ResponseWriter
 	code   int
-	params []struct {
-		key   string
-		value string
-	}
+	params *Params
 }
 
 // NewControl returns new control that implement Control interface.
 func NewControl(w http.ResponseWriter, req *http.Request) Control {
+	params := make(Params, 0)
 	return &control{
-		req: req,
-		w:   w,
+		req:    req,
+		w:      w,
+		params: &params,
 	}
 }
 
@@ -50,21 +49,19 @@ func (c *control) WriteHeader(code int) {
 	c.w.WriteHeader(code)
 }
 
+// Params get embedded key/value data that contains URL/Post query parameters
+func (c *control) Params() *Params {
+	return c.params
+}
+
 // Query searches URL/Post value by key.
 // If there are no values associated with the key, an empty string is returned.
 func (c *control) Query(key string) string {
-	for idx := range c.params {
-		if c.params[idx].key == key {
-			return c.params[idx].value
-		}
+	if param, ok := c.params.Get(key); ok {
+		return param
 	}
 
 	return c.req.URL.Query().Get(key)
-}
-
-// Param sets URL/Post key/value params.
-func (c *control) Param(key, value string) {
-	c.params = append(c.params, struct{ key, value string }{key: key, value: value})
 }
 
 // Code sets HTTP status code e.g. http.StatusOk

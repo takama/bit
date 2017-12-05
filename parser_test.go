@@ -191,7 +191,7 @@ func TestParserRegisterGet(t *testing.T) {
 		}
 		c := NewControl(trw, req)
 		for _, item := range params {
-			c.Param(item.Key, item.Value)
+			c.Params().Set(item.Key, item.Value)
 		}
 		h(c)
 		if trw.Body.String() != exp.data {
@@ -294,7 +294,7 @@ func TestRegisterAsterisk(t *testing.T) {
 	}
 	c := NewControl(trw, req)
 	for _, item := range params {
-		c.Param(item.Key, item.Value)
+		c.Params().Set(item.Key, item.Value)
 	}
 	h(c)
 	if trw.Body.String() != data {

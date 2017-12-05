@@ -406,6 +406,34 @@ func TestRouterRecoveryHandler(t *testing.T) {
 	}
 }
 
+func TestRegisterMiddleware(t *testing.T) {
+	r := getRouterForTesting()
+	r.SetupRegisterMiddleware(func(method, path string, handle func(Control)) (string, string, func(Control)) {
+		return "GET", "/api/v1/" + path, func(c Control) {
+			c.Code(http.StatusBadRequest)
+			handle(c)
+			c.Body("middleware")
+		}
+	})
+
+	body := "data"
+	r.POST("test", func(c Control) { c.Body(body) })
+
+	req, err := http.NewRequest("GET", "/api/v1/test", nil)
+	if err != nil {
+		t.Error(err)
+	}
+	trw := httptest.NewRecorder()
+	r.ServeHTTP(trw, req)
+	expected := body + "middleware"
+	if trw.Body.String() != expected {
+		t.Error("Expected", expected, "got", trw.Body.String())
+	}
+	if trw.Code != http.StatusBadRequest {
+		t.Error("Expected status", http.StatusBadRequest, "got", trw.Code)
+	}
+}
+
 func TestRouterMiddleware(t *testing.T) {
 	r := getRouterForTesting()
 	message := http.StatusText(http.StatusOK)

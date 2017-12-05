@@ -88,6 +88,13 @@ type Router interface {
 	// http status code http.StatusInternalServerError (500)
 	SetupRecoveryHandler(func(Control))
 
+	// SetupRegisterMiddleware allows to define a middleware that take place
+	// during registration of new handlers in the Router via methods GET, POST, etc..
+	//
+	// The middleware is inteded to be used for integration of the routing information
+	// to thirdparty systems.
+	SetupRegisterMiddleware(func(method string, path string, handler func(Control)) (string, string, func(Control)))
+
 	// SetupMiddleware defines handler that is allowed to take control
 	// before it is called standard methods above e.g. GET, PUT.
 	SetupMiddleware(func(func(Control)) func(Control))

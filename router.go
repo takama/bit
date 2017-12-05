@@ -23,6 +23,10 @@ type router struct {
 	// Configurable handler which is called when panic happen.
 	recoveryHandler func(Control)
 
+	// Configurable middleware which is allowed to take control
+	// before registration of new handlers via GET, PUT, etc..
+	registerMiddleware func(string, string, func(Control)) (string, string, func(Control))
+
 	// Configurable handler which is allowed to take control
 	// before it is called standard methods e.g. GET, PUT.
 	middlewareHandler func(func(Control)) func(Control)
@@ -100,6 +104,15 @@ func (r *router) SetupRecoveryHandler(f func(Control)) {
 	r.recoveryHandler = f
 }
 
+// SetupRegisterMiddleware allows to define a middleware that take place
+// during registration of new handlers in the Router via methods GET, POST, etc..
+//
+// The middleware is inteded to be used for integration of the routing information
+// to thirdparty systems.
+func (r *router) SetupRegisterMiddleware(f func(string, string, func(Control)) (string, string, func(Control))) {
+	r.registerMiddleware = f
+}
+
 // SetupMiddleware defines handler is allowed to take control
 // before it is called standard methods e.g. GET, PUT.
 func (r *router) SetupMiddleware(f func(func(Control)) func(Control)) {
@@ -113,6 +126,9 @@ func (r *router) Listen(hostPort string) error {
 
 // registers a new handler with the given path and method.
 func (r *router) register(method, path string, f func(Control)) {
+	if r.registerMiddleware != nil {
+		method, path, f = r.registerMiddleware(method, path, f)
+	}
 	if r.handlers[method] == nil {
 		r.handlers[method] = newParser()
 	}

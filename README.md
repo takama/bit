@@ -27,6 +27,7 @@ type Router interface {
     SetupNotAllowedHandler(func(Control))
     SetupNotFoundHandler(func(Control))
     SetupRecoveryHandler(func(Control))
+    SetupPresetMiddleware(func(method, path string, handler func(Control)) (string, string, func(Control)))
     SetupMiddleware(func(func(Control)) func(Control))
     Listen(hostPort string) error
 }
@@ -39,8 +40,8 @@ Control interface contains methods that control URL/POST/JSON query parameters, 
 ```go
 type Control interface {
     Request() *http.Request
+    Params() *Params
     Query(key string) string
-    Param(key, value string)
     Code(code int)
     GetCode() int
     Body(data interface{})

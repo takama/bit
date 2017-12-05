@@ -406,9 +406,9 @@ func TestRouterRecoveryHandler(t *testing.T) {
 	}
 }
 
-func TestRegisterMiddleware(t *testing.T) {
+func TestPresetMiddleware(t *testing.T) {
 	r := getRouterForTesting()
-	r.SetupRegisterMiddleware(func(method, path string, handle func(Control)) (string, string, func(Control)) {
+	r.SetupPresetMiddleware(func(method, path string, handle func(Control)) (string, string, func(Control)) {
 		return "GET", "/api/v1/" + path, func(c Control) {
 			c.Code(http.StatusBadRequest)
 			handle(c)

@@ -1,6 +1,13 @@
-# Version 0.2.5
+# Version 0.3.0
 
 [Documentation](https://github.com/takama/bit/blob/master/README.md)
+
+## Changelog since 0.2.5
+
+### Codebase
+
+- Added middleware that acted during preset of handlers ([#12](https://github.com/takama/bit/pull/12), [@la0rg](https://github.com/la0rg))
+- Added `Params` with embedded methods ([#13](https://github.com/takama/bit/pull/13), [@takama](https://github.com/takama))
 
 ## Changelog since 0.2.4
 

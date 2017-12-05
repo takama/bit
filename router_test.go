@@ -501,7 +501,7 @@ func TestRouterLookup(t *testing.T) {
 		}
 	}
 
-	wantParams := []Param{{":name", "gopher"}}
+	wantParams := Params{{":name", "gopher"}}
 	if !reflect.DeepEqual(params, wantParams) {
 		t.Fatalf("Wrong parameter values: want %v, got %v", wantParams, params)
 	}

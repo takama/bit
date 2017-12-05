@@ -164,7 +164,7 @@ func (r *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			c := NewControl(w, req)
 			if len(params) > 0 {
 				for _, item := range params {
-					c.Param(item.Key, item.Value)
+					c.Params().Set(item.Key, item.Value)
 				}
 			}
 			if r.middlewareHandler != nil {
@@ -200,7 +200,7 @@ func (r *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 
 // Lookup allows the manual lookup of a method + path combo.
-func (r *router) Lookup(method, path string) (func(Control), []Param, bool) {
+func (r *router) Lookup(method, path string) (func(Control), Params, bool) {
 	if root := r.handlers[method]; root != nil {
 		return root.get(path)
 	}

@@ -13,12 +13,12 @@ type Control interface {
 	// Request returns *http.Request
 	Request() *http.Request
 
+	// Params get embedded key/value data that contains URL/Post query parameters
+	Params() *Params
+
 	// Query searches URL/Post query parameters by key.
 	// If there are no values associated with the key, an empty string is returned.
 	Query(key string) string
-
-	// Param sets URL/Post key/value query parameters.
-	Param(key, value string)
 
 	// Code sets HTTP status code e.g. http.StatusOk
 	Code(code int)
@@ -41,6 +41,31 @@ type Control interface {
 type Param struct {
 	Key   string `json:"key,omitempty"`
 	Value string `json:"value,omitempty"`
+}
+
+// Params contains key/value data
+type Params []Param
+
+// Get returns parameter by key or false
+func (p *Params) Get(key string) (value string, ok bool) {
+	for idx := range *p {
+		if (*p)[idx].Key == key {
+			return (*p)[idx].Value, true
+		}
+	}
+
+	return
+}
+
+// Set change parameter by key or add new
+func (p *Params) Set(key, value string) {
+	for idx := range *p {
+		if (*p)[idx].Key == key {
+			(*p)[idx].Value = value
+			return
+		}
+	}
+	*p = append(*p, Param{Key: key, Value: value})
 }
 
 // Router interface contains base http methods e.g. GET, PUT, POST
@@ -88,6 +113,13 @@ type Router interface {
 	// http status code http.StatusInternalServerError (500)
 	SetupRecoveryHandler(func(Control))
 
+	// SetupPresetMiddleware allows to define a middleware that take place
+	// during registration of new handlers in the Router via methods GET, POST, etc..
+	//
+	// The middleware is inteded to be used for integration of the routing information
+	// to thirdparty systems.
+	SetupPresetMiddleware(func(method, path string, handler func(Control)) (string, string, func(Control)))
+
 	// SetupMiddleware defines handler that is allowed to take control
 	// before it is called standard methods above e.g. GET, PUT.
 	SetupMiddleware(func(func(Control)) func(Control))
@@ -100,5 +132,5 @@ type Router interface {
 	// returns the handle function and the path parameter values.
 	// Otherwise the third return value indicates whether a redirection to the same path
 	// with an extra / without the trailing slash should be performed.
-	Lookup(method, path string) (func(Control), []Param, bool)
+	Lookup(method, path string) (func(Control), Params, bool)
 }
